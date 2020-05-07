@@ -230,3 +230,97 @@ Entrypoint main = bundle.js
 [./src/calc.js] 125 bytes {main}
 [./src/index.js] 208 bytes {main} [built]
 ```
+
+## Adding source map
+
+If we add inline source map to the bundle with Webpack option
+
+```js
+devtool: 'inline-source-map',
+```
+
+Then we get huge bundle size increase and time increase
+
+```
+$ node ./bundle-together.js
+[BABEL] Note: The code generator has deoptimised the styling of /Users/gleb/git/webpack-bundle-experiment/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+*******
+2020-05-07T02:08:42.478Z
+*******
+Hash: f69ed00f16f805901240
+Version: webpack 4.43.0
+Time: 4661ms
+Built at: 05/06/2020 10:08:42 PM
+    Asset      Size  Chunks             Chunk Names
+bundle.js  2.96 MiB    main  [emitted]  main
+Entrypoint main = bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {main} [built]
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {main} [built]
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {main} [built]
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {main} [built]
+[./node_modules/react-dom/index.js] 1.32 KiB {main} [built]
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {main} [built]
+[./node_modules/react/index.js] 189 bytes {main} [built]
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {main} [built]
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {main} [built]
+[./node_modules/scheduler/index.js] 197 bytes {main} [built]
+[./node_modules/scheduler/tracing.js] 213 bytes {main} [built]
+[./src/calc.js] 125 bytes {main} [built]
+[./src/index.js] 208 bytes {main} [built]
+```
+
+Watching the bundle:
+
+```
+First load
+
+$ node ./watch-together.js
+[BABEL] Note: The code generator has deoptimised the styling of /Users/gleb/git/webpack-bundle-experiment/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+*******
+2020-05-07T02:10:09.242Z
+*******
+Hash: f69ed00f16f805901240
+Version: webpack 4.43.0
+Time: 3705ms
+Built at: 05/06/2020 10:10:09 PM
+    Asset      Size  Chunks             Chunk Names
+bundle.js  2.96 MiB    main  [emitted]  main
+Entrypoint main = bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {main} [built]
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {main} [built]
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {main} [built]
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {main} [built]
+[./node_modules/react-dom/index.js] 1.32 KiB {main} [built]
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {main} [built]
+[./node_modules/react/index.js] 189 bytes {main} [built]
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {main} [built]
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {main} [built]
+[./node_modules/scheduler/index.js] 197 bytes {main} [built]
+[./node_modules/scheduler/tracing.js] 213 bytes {main} [built]
+[./src/calc.js] 125 bytes {main} [built]
+[./src/index.js] 208 bytes {main} [built]
+
+Edit file
+Hash: a5199f548e90a407fb7c
+Version: webpack 4.43.0
+Time: 941ms
+Built at: 05/06/2020 10:10:36 PM
+    Asset      Size  Chunks             Chunk Names
+bundle.js  2.96 MiB    main  [emitted]  main
+Entrypoint main = bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {main}
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {main}
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {main}
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {main}
+[./node_modules/react-dom/index.js] 1.32 KiB {main}
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {main}
+[./node_modules/react/index.js] 189 bytes {main}
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {main}
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {main}
+[./node_modules/scheduler/index.js] 197 bytes {main}
+[./node_modules/scheduler/tracing.js] 213 bytes {main}
+[./src/calc.js] 121 bytes {main} [built]
+[./src/index.js] 208 bytes {main}
+```
+
+Vendor bundles

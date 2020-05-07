@@ -21,6 +21,7 @@ const webpackOptions = {
   },
   mode: 'development',
   stats: 'verbose',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -33,24 +34,5 @@ const webpackOptions = {
 }
 
 const compiler = webpack(webpackOptions)
-// if you want to watch files for changes
-// const watching = compiler.watch(
-//   {
-//     // Example watchOptions
-//     aggregateTimeout: 300,
-//     poll: undefined,
-//   },
-//   (err, stats) => {
-//     console.log('*******')
-//     console.log(new Date())
-//     console.log('*******')
-//     if (err) {
-//       console.error(err)
-//     } else {
-//       console.log(stats.toJson('verbose'))
-//     }
-//   },
-// )
-
 // if you want to build it once
 compiler.run(printWebpackStates)

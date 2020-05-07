@@ -1,3 +1,3 @@
 export const add = (a, b) => a + b
-// sub22dd
+// sub
 export const sub = (a, b) => a - b
