@@ -19,6 +19,7 @@ const webpackOptions = {
   },
   mode: 'development',
   stats: 'verbose',
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {

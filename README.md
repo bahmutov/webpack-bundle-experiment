@@ -323,4 +323,91 @@ Entrypoint main = bundle.js
 [./src/index.js] 208 bytes {main}
 ```
 
-Vendor bundles
+### Vendor bundles
+
+```
+$ node ./bundle-vendor.js
+[BABEL] Note: The code generator has deoptimised the styling of /Users/gleb/git/webpack-bundle-experiment/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+*******
+2020-05-07T02:11:21.009Z
+*******
+Hash: 06e94ec4ab7eea301dba
+Version: webpack 4.43.0
+Time: 3529ms
+Built at: 05/06/2020 10:11:21 PM
+                 Asset      Size        Chunks             Chunk Names
+        main.bundle.js  17.3 KiB          main  [emitted]  main
+vendors~main.bundle.js  2.95 MiB  vendors~main  [emitted]  vendors~main
+Entrypoint main = vendors~main.bundle.js main.bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {vendors~main} [built]
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {vendors~main} [built]
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {vendors~main} [built]
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {vendors~main} [built]
+[./node_modules/react-dom/index.js] 1.32 KiB {vendors~main} [built]
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {vendors~main} [built]
+[./node_modules/react/index.js] 189 bytes {vendors~main} [built]
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {vendors~main} [built]
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {vendors~main} [built]
+[./node_modules/scheduler/index.js] 197 bytes {vendors~main} [built]
+[./node_modules/scheduler/tracing.js] 213 bytes {vendors~main} [built]
+[./src/calc.js] 121 bytes {main} [built]
+[./src/index.js] 208 bytes {main} [built]
+```
+
+Watching using vendor bundles
+
+```
+First load
+$ node ./watch-vendor.js
+[BABEL] Note: The code generator has deoptimised the styling of /Users/gleb/git/webpack-bundle-experiment/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+*******
+2020-05-07T02:12:11.424Z
+*******
+Hash: 06e94ec4ab7eea301dba
+Version: webpack 4.43.0
+Time: 3745ms
+Built at: 05/06/2020 10:12:11 PM
+                 Asset      Size        Chunks             Chunk Names
+        main.bundle.js  17.3 KiB          main  [emitted]  main
+vendors~main.bundle.js  2.95 MiB  vendors~main  [emitted]  vendors~main
+Entrypoint main = vendors~main.bundle.js main.bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {vendors~main} [built]
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {vendors~main} [built]
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {vendors~main} [built]
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {vendors~main} [built]
+[./node_modules/react-dom/index.js] 1.32 KiB {vendors~main} [built]
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {vendors~main} [built]
+[./node_modules/react/index.js] 189 bytes {vendors~main} [built]
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {vendors~main} [built]
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {vendors~main} [built]
+[./node_modules/scheduler/index.js] 197 bytes {vendors~main} [built]
+[./node_modules/scheduler/tracing.js] 213 bytes {vendors~main} [built]
+[./src/calc.js] 121 bytes {main} [built]
+[./src/index.js] 208 bytes {main} [built]
+
+Edit file
+
+Hash: 01b0e42de9077ef9c17c
+Version: webpack 4.43.0
+Time: 19ms
+Built at: 05/06/2020 10:12:49 PM
+                 Asset      Size        Chunks  Chunk Names
+        main.bundle.js  17.3 KiB          main  main
+vendors~main.bundle.js  2.95 MiB  vendors~main  vendors~main
+Entrypoint main = vendors~main.bundle.js main.bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {vendors~main}
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {vendors~main}
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {vendors~main}
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {vendors~main}
+[./node_modules/react-dom/index.js] 1.32 KiB {vendors~main}
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {vendors~main}
+[./node_modules/react/index.js] 189 bytes {vendors~main}
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {vendors~main}
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {vendors~main}
+[./node_modules/scheduler/index.js] 197 bytes {vendors~main}
+[./node_modules/scheduler/tracing.js] 213 bytes {vendors~main}
+[./src/calc.js] 122 bytes {main} [built]
+[./src/index.js] 208 bytes {main}
+```
+
+So - with inline source maps, splitting the chunks into main and vendor bundles makes _huuuuge_ difference.
