@@ -47,6 +47,7 @@ compiler.run((err, stats) => {
 Which produces in 1120ms a single bundle with 81.8 KiB
 
 ```
+$ node ./bundle-together.js
 Hash: 2822f05ee7e724e6a394
 Version: webpack 4.43.0
 Time: 1120ms
@@ -166,3 +167,66 @@ Entrypoint main = vendors~main.bundle.js main.bundle.js
 [./src/index.js] 174 bytes {main} [built]
 ```
 Typically touching a file in `src` rebuilds the bundle in 10-20ms
+
+## Increasing the vendor bundle size
+
+Let's add ReactDOM and import it. This makes a huge difference for initial bundling, but almost no difference for watching
+
+### Bundle together
+
+```
+$ node ./bundle-together.js
+[BABEL] Note: The code generator has deoptimised the styling of /Users/gleb/git/webpack-bundle-experiment/node_modules/react-dom/cjs/react-dom.development.js as it exceeds the max of 500KB.
+*******
+2020-05-07T01:55:31.631Z
+*******
+Hash: 60a10fbf87873207ec87
+Version: webpack 4.43.0
+Time: 2909ms
+Built at: 05/06/2020 9:55:31 PM
+    Asset     Size  Chunks             Chunk Names
+bundle.js  838 KiB    main  [emitted]  main
+Entrypoint main = bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {main} [built]
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {main} [built]
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {main} [built]
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {main} [built]
+[./node_modules/react-dom/index.js] 1.32 KiB {main} [built]
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {main} [built]
+[./node_modules/react/index.js] 189 bytes {main} [built]
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {main} [built]
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {main} [built]
+[./node_modules/scheduler/index.js] 197 bytes {main} [built]
+[./node_modules/scheduler/tracing.js] 213 bytes {main} [built]
+[./src/calc.js] 125 bytes {main} [built]
+[./src/index.js] 209 bytes {main} [built]
+```
+
+### Watching together
+
+```
+$ node ./watch-together.js
+....
+edit the file and save
+
+Hash: ce4f2c2ff6d84564079e
+Version: webpack 4.43.0
+Time: 14ms
+Built at: 05/06/2020 9:56:17 PM
+    Asset     Size  Chunks  Chunk Names
+bundle.js  838 KiB    main  main
+Entrypoint main = bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {main}
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {main}
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {main}
+[./node_modules/react-dom/cjs/react-dom.development.js] 709 KiB {main}
+[./node_modules/react-dom/index.js] 1.32 KiB {main}
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {main}
+[./node_modules/react/index.js] 189 bytes {main}
+[./node_modules/scheduler/cjs/scheduler-tracing.development.js] 9.91 KiB {main}
+[./node_modules/scheduler/cjs/scheduler.development.js] 26.5 KiB {main}
+[./node_modules/scheduler/index.js] 197 bytes {main}
+[./node_modules/scheduler/tracing.js] 213 bytes {main}
+[./src/calc.js] 125 bytes {main}
+[./src/index.js] 208 bytes {main} [built]
+```
