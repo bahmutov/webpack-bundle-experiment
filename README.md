@@ -83,3 +83,86 @@ Entrypoint main = bundle.js
 [./src/calc.js] 125 bytes {main} [built]
 [./src/index.js] 166 bytes {main}
 ```
+
+## Vendor bundle
+
+We can automatically split the `node_modules` into separate vendor bundle. In webpack configuration file [bundle-vendor.js](bundle-vendor.js) add
+
+```js
+entry: filename,
+output: {
+  path: path.resolve('./dist/vendor'),
+  filename: '[name].bundle.js',
+},
+// will put node_modules code into separate "vendor" bundle
+optimization: {
+  splitChunks: {
+    chunks: 'all',
+  },
+}
+```
+
+There are two bundles now - one for `src` and another for `vendor`
+
+```
+Hash: 1b79bcc1a6389f901773
+Version: webpack 4.43.0
+Time: 1119ms
+Built at: 05/06/2020 9:35:48 PM
+                 Asset      Size        Chunks             Chunk Names
+        main.bundle.js   7.8 KiB          main  [emitted]  main
+vendors~main.bundle.js  76.8 KiB  vendors~main  [emitted]  vendors~main
+Entrypoint main = vendors~main.bundle.js main.bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {vendors~main} [built]
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {vendors~main} [built]
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {vendors~main} [built]
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {vendors~main} [built]
+[./node_modules/react/index.js] 189 bytes {vendors~main} [built]
+[./src/calc.js] 125 bytes {main} [built]
+[./src/index.js] 166 bytes {main} [built]
+```
+
+## Watching vendor
+
+We can use [watch-vendor.js](watch-vendor.js) script to watch and output vendor bundle.
+
+The initial run finishes in 1100ms
+
+```
+Hash: 1b79bcc1a6389f901773
+Version: webpack 4.43.0
+Time: 1166ms
+Built at: 05/06/2020 9:37:35 PM
+                 Asset      Size        Chunks             Chunk Names
+        main.bundle.js   7.8 KiB          main  [emitted]  main
+vendors~main.bundle.js  76.8 KiB  vendors~main  [emitted]  vendors~main
+Entrypoint main = vendors~main.bundle.js main.bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {vendors~main} [built]
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {vendors~main} [built]
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {vendors~main} [built]
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {vendors~main} [built]
+[./node_modules/react/index.js] 189 bytes {vendors~main} [built]
+[./src/calc.js] 125 bytes {main} [built]
+[./src/index.js] 166 bytes {main} [built]
+```
+
+If we touch the `src/index.js` file
+
+```
+Hash: e33046ee14d2fcb64fb7
+Version: webpack 4.43.0
+Time: 39ms
+Built at: 05/06/2020 9:38:26 PM
+                 Asset      Size        Chunks             Chunk Names
+        main.bundle.js   7.8 KiB          main  [emitted]  main
+vendors~main.bundle.js  76.8 KiB  vendors~main             vendors~main
+Entrypoint main = vendors~main.bundle.js main.bundle.js
+[./node_modules/object-assign/index.js] 2.17 KiB {vendors~main}
+[./node_modules/prop-types/checkPropTypes.js] 3.95 KiB {vendors~main}
+[./node_modules/prop-types/lib/ReactPropTypesSecret.js] 311 bytes {vendors~main}
+[./node_modules/react/cjs/react.development.js] 65.9 KiB {vendors~main}
+[./node_modules/react/index.js] 189 bytes {vendors~main}
+[./src/calc.js] 125 bytes {main}
+[./src/index.js] 174 bytes {main} [built]
+```
+Typically touching a file in `src` rebuilds the bundle in 10-20ms

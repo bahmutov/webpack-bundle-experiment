@@ -1,5 +1,3 @@
-// will be using Webpack Node API
-// https://webpack.js.org/api/node/
 const webpack = require('webpack')
 const path = require('path')
 const {printWebpackStates} = require('./utils')
@@ -11,8 +9,8 @@ const babelConfig = require('./babel.config.js')
 const webpackOptions = {
   entry: filename,
   output: {
-    path: path.resolve('./dist/watch-together'),
-    filename: 'bundle.js',
+    path: path.resolve('./dist/watch-vendor'),
+    filename: '[name].bundle.js',
   },
   resolve: {
     alias: {
@@ -30,15 +28,19 @@ const webpackOptions = {
       },
     ],
   },
+  // will put node_modules code into separate "vendor" bundle
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 }
 
 const compiler = webpack(webpackOptions)
-// if you want to watch files for changes
-const watching = compiler.watch(
+compiler.watch(
   {
     aggregateTimeout: 100,
     poll: undefined,
   },
   printWebpackStates
 )
-
